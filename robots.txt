@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://SanjayKumar-dev20.github.io/Futr_portfolio/sitemap.xml

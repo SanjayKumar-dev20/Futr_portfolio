@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/Futr_portfolio/favicon.svg" />
+    <meta name="theme-color" content="#0A0A0B" />
+
+    <!-- The hero headline is 800-weight Montserrat and is the largest thing on
+         first paint. Without this the font is discovered only after the CSS
+         parses, and the headline visibly swaps. latin-ext is deliberately not
+         preloaded — its unicode-range means it is usually never fetched. -->
+    <link
+      rel="preload"
+      href="/Futr_portfolio/fonts/montserrat-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <!-- No preload for the hero poster here on purpose. This head is shared by
+         all 11 routes, so a global preload made every page download a 113 kB
+         still that only Home paints. HeroVideo renders it as a real <img> with
+         fetchpriority="high" instead — discovered a few ms later, but only on
+         the one route that shows it. -->
+
+    <title>Futr Markets — Transforming Markets with Direct Commerce</title>
+    <meta
+      name="description"
+      content="Futr Markets removes the middle layers so trade works the way it should — simple, fast, efficient and fair. Optimized products, an efficient supply chain and direct market access for manufacturers and businesses."
+    />
+    <link rel="canonical" href="https://SanjayKumar-dev20.github.io/Futr_portfolio/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Futr Markets" />
+    <meta property="og:url" content="https://SanjayKumar-dev20.github.io/Futr_portfolio/" />
+    <meta property="og:title" content="Futr Markets — Transforming Markets with Direct Commerce" />
+    <meta
+      property="og:description"
+      content="Building Brands. Optimizing Markets. Capturing Value."
+    />
+    <!-- Absolute, not "/og.jpg". A crawler resolving a relative og:image is
+         not guaranteed to have a base to resolve it against, and several
+         (WhatsApp and LinkedIn among them) simply drop the card. The file is
+         built by `npm run build:og` from the hero poster. -->
+    <meta property="og:image" content="https://SanjayKumar-dev20.github.io/Futr_portfolio/og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="A dark globe wrapped in a red network of trade connections."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Futr Markets",
+        "url": "https://SanjayKumar-dev20.github.io/Futr_portfolio/",
+        "slogan": "Transforming Markets with Direct Commerce",
+        "description": "Direct commerce infrastructure connecting manufacturers, businesses and customers through optimized products and efficient supply systems."
+      }
+    </script>
+    <script type="module" crossorigin src="/Futr_portfolio/assets/index-B3SOtKNa.js"></script>
+    <link rel="modulepreload" crossorigin href="/Futr_portfolio/assets/motion-CzGW6FVa.js">
+    <link rel="stylesheet" crossorigin href="/Futr_portfolio/assets/index-D3tjnb37.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

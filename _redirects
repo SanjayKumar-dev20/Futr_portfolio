@@ -1,0 +1,12 @@
+# SPA fallback — Netlify / Cloudflare Pages.
+#
+# Routing is client-side, so the server has no file at /difference, /invest and
+# so on. Without this rule a visitor who types a deep link, follows one from
+# search, or refreshes anywhere other than the home page gets a 404.
+#
+# Real files on disk always win over this rule, so /config.json, /images/*,
+# /video/*, /sitemap.xml and /robots.txt are still served normally.
+#
+# 200 rather than 301: the URL must stay as the visitor typed it, otherwise the
+# router never sees the route it is meant to render.
+/*  /index.html  200
