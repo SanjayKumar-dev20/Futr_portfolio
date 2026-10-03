@@ -73,28 +73,33 @@ export default function Talk() {
         eyebrow="Talk"
         lines={["Let's Move Markets", { text: '— Together.', accent: true }]}
         body="Tell us which side of the market you're on. We'll come back to you with something useful, not a brochure."
+        compact
       />
 
       {/* ── Path selection ───────────────────────────────────────────── */}
-      <Section tone="bone" pad="md" aria-labelledby="paths-heading">
+      <Section tone="bone" pad="sm" aria-labelledby="paths-heading">
         <Container>
-          <RevealOnScroll>
-            <h2 id="paths-heading" className="t-eyebrow text-ash">
-              Choose your path
-            </h2>
-          </RevealOnScroll>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
+            <RevealOnScroll>
+              <p className="t-eyebrow text-red">01 / Connect</p>
+              <h2 id="paths-heading" className="mt-3 t-h2">Choose your path.</h2>
+            </RevealOnScroll>
+            <p className="max-w-[37ch] t-small text-ash sm:text-right">
+              Pick what best describes you so we can direct your message to the right team.
+            </p>
+          </div>
 
-          <div className="mt-6 grid gap-4 sm:grid-cols-3">
-            {PATHS.map(({ id, label, action, Icon }, i) => {
+          <div className="mt-7 grid gap-3 md:grid-cols-3 md:gap-4">
+            {PATHS.map(({ id, label, action, Icon }) => {
               const active = userType === id
               return (
-                <RevealOnScroll key={id} delay={i * 90}>
+                <div key={id}>
                   <button
                     type="button"
                     onClick={() => setUserType(id)}
                     aria-pressed={active}
                     className={[
-                      'group flex w-full items-center gap-4 rounded-sm border p-5 text-left transition-all duration-400 [transition-timing-function:var(--ease-out-quint)]',
+                      'group flex h-full min-h-20 w-full items-center gap-4 rounded-sm border px-5 py-4 text-left transition-all duration-400 [transition-timing-function:var(--ease-out-quint)]',
                       active
                         ? 'border-red bg-paper shadow-[0_18px_40px_-28px_rgba(0,0,0,0.35)]'
                         : 'border-rule bg-paper/60 hover:border-ink/25',
@@ -112,7 +117,7 @@ export default function Talk() {
                       <span className="mt-0.5 block text-xs text-ash">{action}</span>
                     </span>
                   </button>
-                </RevealOnScroll>
+                </div>
               )
             })}
           </div>
@@ -120,16 +125,20 @@ export default function Talk() {
       </Section>
 
       {/* ── Form + contact details ───────────────────────────────────── */}
-      <Section tone="light" pad="lg" aria-labelledby="form-heading">
+      <Section tone="light" pad="sm" aria-labelledby="form-heading">
         <Container>
-          <div className="grid gap-14 lg:grid-cols-12 lg:gap-10">
-            <div className="lg:col-span-7">
-              <h2 id="form-heading" className="t-h2">
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,1.65fr)_minmax(17rem,0.85fr)] lg:gap-14 xl:gap-20">
+            <div className="min-w-0">
+              <p className="t-eyebrow text-red">02 / Your message</p>
+              <h2 id="form-heading" className="mt-3 t-h2">
                 Send it over.
               </h2>
+              <p className="mt-3 max-w-[48ch] t-small text-ash">
+                Share a few details and we’ll get back to you with a useful next step.
+              </p>
 
-              <form ref={formRef} onSubmit={onSubmit} noValidate className="mt-9 space-y-6">
-                <div className="grid gap-6 sm:grid-cols-2">
+              <form ref={formRef} onSubmit={onSubmit} noValidate className="mt-7 space-y-5">
+                <div className="grid gap-x-6 gap-y-5 sm:grid-cols-2">
                   {FIELDS.map((field) => (
                     <Field
                       key={field.name}
@@ -184,7 +193,7 @@ export default function Talk() {
                   />
                 </div>
 
-                <div className="flex flex-wrap items-center gap-5 pt-2">
+                <div className="flex flex-wrap items-center gap-4 pt-1">
                   <PrimaryCTA
                     size="lg"
                     type="submit"
@@ -194,7 +203,7 @@ export default function Talk() {
                     {status === 'loading' ? 'Sending…' : 'Send message'}
                   </PrimaryCTA>
 
-                  <p aria-live="polite" className="t-small">
+                  <p aria-live="polite" className="min-w-0 flex-1 t-small">
                     {status === 'success' && (
                       <span className="text-ink">
                         Sent. We'll come back to you within two working days.
@@ -224,14 +233,14 @@ export default function Talk() {
             </div>
 
             {/* Contact column */}
-            <aside className="lg:col-span-4 lg:col-start-9">
-              <h2 className="t-eyebrow text-ash">Direct</h2>
-              <ContactDetails tone="light" iconSize={18} spacing="space-y-5" className="mt-6" />
+            <aside className="border-t border-rule pt-8 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-1 xl:pl-12">
+              <p className="t-eyebrow text-red">03 / Direct</p>
+              <h2 className="mt-3 t-h3">Prefer a conversation?</h2>
+              <ContactDetails tone="light" iconSize={18} spacing="space-y-5" className="mt-7" />
 
-              <div className="mt-10 border-t border-rule pt-8">
+              <div className="mt-8 border-t border-rule pt-6">
                 <p className="max-w-[34ch] t-small text-ash">
-                  Prefer to talk first? Call during business hours and ask for
-                  the partnerships desk.
+                  Call during business hours and ask for the partnerships desk.
                 </p>
               </div>
             </aside>
@@ -291,7 +300,7 @@ function Field({ name, label, type = 'text', required, textarea, value, onChange
       </label>
 
       {textarea ? (
-        <textarea {...shared} rows={5} className={`${shared.className} resize-y`} />
+        <textarea {...shared} rows={4} className={`${shared.className} resize-y`} />
       ) : (
         <input {...shared} type={type} />
       )}
@@ -304,4 +313,3 @@ function Field({ name, label, type = 'text', required, textarea, value, onChange
     </div>
   )
 }
-

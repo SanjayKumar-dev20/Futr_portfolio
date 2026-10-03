@@ -17,6 +17,7 @@ export default function PageHero({
   children,
   tone = 'void',
   align = 'left',
+  compact = false,
 }) {
   const [ref, inView] = useInView({ threshold: 0.1 })
   const centered = align === 'center'
@@ -37,7 +38,9 @@ export default function PageHero({
       <Container className="relative">
         <div
           className={[
-            'pb-20 pt-[calc(var(--nav-h)+5rem)] md:pb-28 md:pt-[calc(var(--nav-h)+7rem)]',
+            compact
+              ? 'pb-14 pt-[calc(var(--nav-h)+3rem)] md:pb-20 md:pt-[calc(var(--nav-h)+5rem)]'
+              : 'pb-20 pt-[calc(var(--nav-h)+5rem)] md:pb-28 md:pt-[calc(var(--nav-h)+7rem)]',
             centered ? 'mx-auto max-w-[46rem] text-center' : 'max-w-[52rem]',
           ].join(' ')}
         >
