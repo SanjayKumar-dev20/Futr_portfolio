@@ -1,0 +1,14 @@
+{
+  "_README": "Futr Markets — site configuration. Edit this file directly on the server; no rebuild is needed. Reload the page to see changes. Keep it valid JSON: every value in double quotes, no trailing commas.",
+
+  "contact": {
+    "_provider_options": "sheets | web3forms | formspree | endpoint | none",
+    "provider": "none",
+
+    "_endpoint": "The URL enquiries are POSTed to. For 'sheets' this is the Google Apps Script /exec URL. Leave empty for 'web3forms'.",
+    "endpoint": "",
+
+    "_accessKey": "Only used by 'web3forms'. Leave empty otherwise.",
+    "accessKey": ""
+  }
+}

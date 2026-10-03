@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="12" fill="#0A0A0B"/>
+  <!-- F in the weight of Montserrat Bold -->
+  <path d="M18 14h25v9H28.5v9H41v9H28.5v17H18z" fill="#FFFFFF"/>
+  <!-- the Futr dot -->
+  <circle cx="47.5" cy="43.5" r="6.5" fill="#FF0B2A"/>
+</svg>

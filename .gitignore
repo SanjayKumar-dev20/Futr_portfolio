@@ -1,0 +1,32 @@
+node_modules
+dist
+dist-ssr
+*.local
+
+# Build / tooling output
+.vite
+.playwright-mcp
+
+# Editors
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Build inputs, not deliverables. These live outside public/ on purpose —
+# anything in public/ is copied verbatim into dist/, and shipping the JPEG
+# sources alongside the WebP outputs put 5.5 MB of dead weight in the deploy.
+#
+# `npm run fetch:images` repopulates image-source/;
+# `npm run optimize:images` produces the public/images/*.webp files, which ARE
+# committed. The hero video master is handled the same way.
+image-source/
+
+logs
+*.log
+npm-debug.log*

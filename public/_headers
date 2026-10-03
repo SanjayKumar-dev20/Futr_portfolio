@@ -1,0 +1,104 @@
+# Security headers — Netlify / Cloudflare Pages format.
+#
+# This file is served verbatim from the site root. Vercel users: the same
+# policy is in vercel.json, and the two MUST be kept in step — they had already
+# drifted (this file denied interest-cohort, vercel.json did not), which is
+# exactly the failure mode to watch for. If you change a header here, change it
+# there in the same commit.
+#
+# A static SPA has a small attack surface — no server, no database, no auth,
+# no user accounts, no payments. Almost everything below is about limiting the
+# damage if a dependency is ever compromised, and about stopping the site being
+# framed or sniffed.
+
+/*
+  # Force HTTPS for two years, including subdomains. Only enable `preload`
+  # once you are certain every subdomain can serve HTTPS — it is hard to undo.
+  Strict-Transport-Security: max-age=63072000; includeSubDomains
+
+  # Stop the browser guessing a response is a script when it is not.
+  X-Content-Type-Options: nosniff
+
+  # Clickjacking. frame-ancestors in the CSP below is the modern control;
+  # this is the fallback for older browsers.
+  X-Frame-Options: DENY
+
+  # Send the origin to other sites, the full path to our own. Keeps query
+  # strings out of third-party referer logs.
+  Referrer-Policy: strict-origin-when-cross-origin
+
+  # Nothing on this site uses any of these. Deny them outright so a compromised
+  # dependency cannot start the camera or read location.
+  Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), interest-cohort=()
+
+  # Put this document in its own browsing-context group. Nothing here opens a
+  # popup it needs to talk to, and every outbound link already carries
+  # rel="noopener" — this makes that guarantee structural rather than a thing
+  # each link has to remember, so a page we open can never reach back into
+  # `window.opener`.
+  Cross-Origin-Opener-Policy: same-origin
+
+  # Refuse to be loaded as a subresource by another origin. Combined with
+  # frame-ancestors, this site cannot be embedded anywhere. /og.jpg is the one
+  # deliberate exception below — it is meant to be fetched by other people.
+  Cross-Origin-Resource-Policy: same-origin
+
+  # Content Security Policy.
+  #
+  #   style-src 'unsafe-inline' is unavoidable: the design system sets
+  #     per-element transition delays via React's style prop, which produces
+  #     style attributes. Removing it would mean rewriting every staged reveal
+  #     to use pre-generated classes.
+  #
+  #   img-src data: is needed for the film-grain texture, an inline SVG
+  #     data-URI in the CSS.
+  #
+  #   connect-src lists every contact-form backend public/config.json can be
+  #     switched to, because that switch is documented as not needing a
+  #     rebuild — and a provider the policy does not allow is a provider whose
+  #     enquiries all fail. Delete the lines you are not using; each one is an
+  #     origin a compromised dependency could post to.
+  #       sheets     script.google.com, script.googleusercontent.com
+  #       web3forms  api.web3forms.com
+  #       formspree  formspree.io
+  #     Using provider "endpoint"? Add your own origin here or nothing will
+  #     send.
+  #
+  #   script-src has no 'unsafe-inline': the only inline block is the
+  #     application/ld+json structured data, which is not executed.
+  #
+  #   frame-src/worker-src/manifest-src are 'none'/'self' because the site uses
+  #     no iframes, no workers and no web manifest. default-src already covers
+  #     them, but naming them means adding one later is a deliberate edit here
+  #     rather than something that quietly inherits a permission.
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; font-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://api.web3forms.com https://formspree.io; form-action 'self'; frame-ancestors 'none'; frame-src 'none'; worker-src 'self'; manifest-src 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
+
+# Fingerprinted build assets never change under the same name — cache hard.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Media and fonts are replaced by filename, not hash. Cache for a week so a
+# photography swap goes live without waiting a year.
+/images/*
+  Cache-Control: public, max-age=604800
+/video/*
+  Cache-Control: public, max-age=604800
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# The social preview image. This is the one file on the site that exists to be
+# fetched by somebody else, so the global same-origin CORP has to be lifted for
+# it or link previews render blank in browser-based chat clients.
+/og.jpg
+  Cross-Origin-Resource-Policy: cross-origin
+  Cache-Control: public, max-age=604800
+
+# The HTML shell must always be revalidated or users get a stale app that
+# points at deleted asset hashes.
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Runtime config. The client edits this on the server to point the contact form
+# at their Google Sheet — if a CDN caches it, their change appears not to work.
+/config.json
+  Cache-Control: no-cache, must-revalidate

@@ -1,0 +1,223 @@
+/* ===========================================================================
+   FUTR MARKETS — MOTION
+   ---------------------------------------------------------------------------
+   The brief is explicit: motion is "controlled and deliberate, representing
+   movement in markets rather than decorative animation." Nothing here bounces,
+   nothing overshoots. Everything moves in one direction and settles.
+   =========================================================================== */
+
+/* ── Scroll reveal (driven by RevealOnScroll / IntersectionObserver) ─────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(var(--reveal-y, 40px));
+  transition:
+    opacity 0.7s var(--ease-out-quint),
+    transform 0.7s var(--ease-out-quint);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Mask-wipe reveal for images — the brief asks for reveal masks, not fades */
+.reveal-mask {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 0.95s var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal-mask.is-in {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Hairline that draws itself left-to-right */
+.reveal-line {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.9s var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal-line.is-in {
+  transform: scaleX(1);
+}
+
+/* ── Hero line-by-line type reveal ──────────────────────────────────────── */
+.line-mask {
+  display: block;
+  overflow: hidden;
+}
+.line-mask > span {
+  display: block;
+  transform: translateY(105%);
+  transition: transform 0.95s var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.line-mask.is-in > span {
+  transform: none;
+}
+
+/* ── Scroll indicator ───────────────────────────────────────────────────── */
+@keyframes fm-scroll-dot {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  22% {
+    opacity: 1;
+  }
+  78% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(9px);
+    opacity: 0;
+  }
+}
+.scroll-dot {
+  animation: fm-scroll-dot 1.9s var(--ease-in-out-quart) infinite;
+}
+
+/* ── Red energy pulse travelling along a flow line ──────────────────────── */
+@keyframes fm-flow {
+  from {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  to {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+/* Pulse travelling along a FlowLine */
+@keyframes fm-flow-x {
+  0% {
+    left: -3rem;
+    opacity: 0;
+  }
+  15%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes fm-flow-y {
+  0% {
+    top: -3rem;
+    opacity: 0;
+  }
+  15%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes fm-dash {
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+.flow-dash {
+  stroke-dasharray: 5 9;
+  animation: fm-dash 22s linear infinite;
+}
+
+/* ── Clientele marquee ──────────────────────────────────────────────────── */
+@keyframes fm-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: fm-marquee var(--marquee-dur, 44s) linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* ── Page transition: dark layer + red line sweep, 560ms ────────────────── */
+@keyframes fm-page-wipe {
+  0% {
+    clip-path: inset(0 0 100% 0);
+  }
+  46% {
+    clip-path: inset(0 0 0 0);
+  }
+  56% {
+    clip-path: inset(0 0 0 0);
+  }
+  100% {
+    clip-path: inset(100% 0 0 0);
+  }
+}
+
+.page-wipe {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  pointer-events: none;
+  background: var(--color-graphite);
+  transform-origin: bottom;
+}
+.page-wipe__line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: var(--color-red);
+}
+
+/* ── Micro-interactions ─────────────────────────────────────────────────── */
+.lift {
+  transition:
+    transform 0.45s var(--ease-out-quint),
+    box-shadow 0.45s var(--ease-out-quint),
+    border-color 0.45s var(--ease-out-quint);
+}
+.lift:hover {
+  transform: translateY(-4px);
+}
+
+.arrow-slide {
+  transition: transform 0.4s var(--ease-out-quint);
+}
+.group:hover .arrow-slide {
+  transform: translateX(4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-mask,
+  .reveal-line,
+  .line-mask > span {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+  .scroll-dot,
+  .marquee-track,
+  .flow-dash,
+  [style*='fm-flow-x'],
+  [class*='fm-flow-y'] {
+    animation: none !important;
+  }
+}
