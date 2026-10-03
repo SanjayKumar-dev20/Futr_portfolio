@@ -26,9 +26,9 @@ const cancelIdle = (id) => {
 }
 
 export default function HeroVideo({
-  src = '/video/hero-loop.mp4',
-  srcSmall = '/video/hero-loop-sm.mp4',
-  poster = '/video/hero-poster.webp',
+  src = `${import.meta.env.BASE_URL}video/hero-loop.mp4`,
+  srcSmall = `${import.meta.env.BASE_URL}video/hero-loop-sm.mp4`,
+  poster = `${import.meta.env.BASE_URL}video/hero-poster.webp`,
   className = '',
 }) {
   const prefersReduced = useReducedMotion()

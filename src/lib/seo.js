@@ -7,7 +7,9 @@ import { useEffect } from 'react'
  * exactly four tags to set, and a 12kB dependency to do four `setAttribute`
  * calls is not a trade worth making.
  */
-const SITE = 'https://futrmarkets.com'
+const SITE = import.meta.env.BASE_URL === '/'
+  ? 'https://futrmarkets.com'
+  : new URL(import.meta.env.BASE_URL, window.location.origin).href.replace(/\/$/, '')
 
 function upsertMeta(selector, attrs) {
   let el = document.head.querySelector(selector)

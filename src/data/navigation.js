@@ -61,5 +61,5 @@ export const SOCIAL = [
 export const LEGAL = [
   { label: 'Privacy', to: '/privacy' },
   { label: 'Terms', to: '/terms' },
-  { label: 'Sitemap', href: '/sitemap.xml' },
+  { label: 'Sitemap', href: `${import.meta.env.BASE_URL}sitemap.xml` },
 ]

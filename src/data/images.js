@@ -16,7 +16,7 @@
  * operators, small textile units, kirana shops and handcart logistics. The
  * explicit instruction was *not* to look like a large corporation.
  */
-const base = '/images'
+const base = `${import.meta.env.BASE_URL}images`
 
 export const IMAGES = {
   manufacturingFloor: {
