@@ -16,7 +16,7 @@ export default function PageHero({
   body,
   children,
   tone = 'void',
-  align = 'left',
+  align = 'center',
   compact = false,
 }) {
   const [ref, inView] = useInView({ threshold: 0.1 })
@@ -41,7 +41,7 @@ export default function PageHero({
             compact
               ? 'pb-14 pt-[calc(var(--nav-h)+3rem)] md:pb-20 md:pt-[calc(var(--nav-h)+5rem)]'
               : 'pb-20 pt-[calc(var(--nav-h)+5rem)] md:pb-28 md:pt-[calc(var(--nav-h)+7rem)]',
-            centered ? 'mx-auto max-w-[46rem] text-center' : 'max-w-[52rem]',
+            centered ? 'mx-auto max-w-[58rem] text-center' : 'max-w-[52rem]',
           ].join(' ')}
         >
           {eyebrow && (

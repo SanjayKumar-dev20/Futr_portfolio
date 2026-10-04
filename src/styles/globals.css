@@ -225,14 +225,14 @@ img {
    three-line lockup in the comp reads as one solid block of type.
    =========================================================================== */
 .t-hero {
-  font-size: clamp(2.75rem, 6.2vw, 5.25rem);
+  font-size: clamp(2.25rem, 4.6vw, 3.75rem);
   font-weight: 800;
-  line-height: 0.96;
+  line-height: 1.02;
   letter-spacing: -0.035em;
 }
 
 .home-hero-heading {
-  font-size: clamp(2.5rem, 4.8vw, 4rem);
+  font-size: clamp(2.25rem, 4.25vw, 3.5rem);
   line-height: 1.01;
 }
 
