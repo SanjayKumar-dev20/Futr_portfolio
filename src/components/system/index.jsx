@@ -206,7 +206,12 @@ export function AnimatedHeading({
             className={`line-mask ${inView ? 'is-in' : ''}`}
             style={{ '--reveal-delay': `${delay + i * step}ms` }}
           >
-            <span className={accent ? 'text-red' : undefined}>{text}</span>
+            <span className={accent ? 'text-red' : undefined}>
+              {text}
+              {typeof line === 'object' && line.accentSuffix && (
+                <span className="text-red">{line.accentSuffix}</span>
+              )}
+            </span>
           </span>
         )
       })}

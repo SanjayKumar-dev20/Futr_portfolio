@@ -31,7 +31,7 @@ const ORBIT = [
 export default function Hero() {
   const [ref, inView] = useInView({ threshold: 0.05 })
 
-  // Body copy and CTAs follow the three-line heading reveal, which runs from
+  // Body copy and CTAs follow the two-line heading reveal, which runs from
   // 320ms at 110ms per line.
   const copyAt = stagger(780, 140)
 
@@ -47,7 +47,7 @@ export default function Hero() {
         className="pointer-events-none absolute inset-0 z-0"
         style={fadeIn(inView, 0, { duration: 1600 })}
       >
-        <HeroVideo className="h-full w-full" />
+        <HeroVideo className="h-full w-full brightness-[0.6]" />
       </div>
 
       {/* ── Scrim ────────────────────────────────────────────────────────
@@ -91,14 +91,14 @@ export default function Hero() {
       {/* ── Copy ─────────────────────────────────────────────────────── */}
       <div className="relative z-20 flex min-h-[100svh] items-center pt-[var(--nav-h)]">
         <div className="fm-container w-full">
-          <div className="max-w-[40rem] lg:max-w-[34rem] xl:max-w-[38rem]">
+          <div className="max-w-[56rem] lg:max-w-[48rem] xl:max-w-[52rem]">
             <p className="t-eyebrow text-white/70" style={riseIn(inView, 120, { distance: 8 })}>
               {HOME.hero.eyebrow}
             </p>
 
             <AnimatedHeading
               id="hero-heading"
-              className="mt-7"
+              className="mt-7 home-hero-heading"
               delay={320}
               step={110}
               lines={HOME.hero.lines}
