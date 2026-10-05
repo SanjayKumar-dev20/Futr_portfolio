@@ -3,10 +3,10 @@
 
   "contact": {
     "_provider_options": "sheets | web3forms | formspree | endpoint | none",
-    "provider": "none",
+    "provider": "sheets",
 
     "_endpoint": "The URL enquiries are POSTed to. For 'sheets' this is the Google Apps Script /exec URL. Leave empty for 'web3forms'.",
-    "endpoint": "",
+    "endpoint": "https://script.google.com/macros/s/AKfycbwv9XOz-rpMVHW92ip77xABhGcidgVtsq4zSLEqIyyXVAsE85E8uoaiO6CfsmwHPfi7/exec",
 
     "_accessKey": "Only used by 'web3forms'. Leave empty otherwise.",
     "accessKey": ""
