@@ -30,3 +30,5 @@ image-source/
 logs
 *.log
 npm-debug.log*
+.vercel
+.env*
