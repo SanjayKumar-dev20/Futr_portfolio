@@ -167,56 +167,70 @@ function MobileMenu({ ref, open, onClose }) {
           open ? '[clip-path:inset(0_0_0%_0)]' : '[clip-path:inset(0_0_100%_0)]',
         ].join(' ')}
       >
-        <div aria-hidden className="absolute inset-0 bg-grid text-white opacity-40 mask-fade" />
+        <div aria-hidden className="absolute inset-0 bg-grid text-white opacity-25 mask-fade" />
         <div
           aria-hidden
-          className="glow-red absolute -right-24 top-1/3 h-80 w-80 opacity-60"
+          className="glow-red absolute -right-24 top-1/3 h-80 w-80 opacity-35"
         />
 
         <nav
           aria-label="Mobile"
-          className="fm-container relative flex h-full flex-col overflow-y-auto pt-[var(--nav-h)] pb-8"
+          className="fm-container relative h-full overflow-y-auto pt-[calc(var(--nav-h)+1rem)] pb-6"
         >
-          <ul className="my-auto space-y-1">
-            {NAV.map((item, i) => (
-              <li key={item.to} className="overflow-hidden">
-                <NavLink
-                  to={item.to}
-                  end={item.to === '/'}
-                  onClick={onClose}
-                  className={({ isActive }) =>
-                    [
-                      'block py-3 text-[2rem] font-bold leading-tight tracking-[-0.03em]',
-                      'transition-[transform,opacity,color] duration-700 [transition-timing-function:var(--ease-out-expo)]',
-                      isActive ? 'text-red' : 'text-white',
-                      open ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0',
-                    ].join(' ')
-                  }
-                  style={{ transitionDelay: `${open ? 140 + i * 65 : 0}ms` }}
-                >
-                  <span className="t-eyebrow mr-4 align-middle text-red/70">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  {item.label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
+          <div className="mx-auto flex min-h-full w-full max-w-[34rem] flex-col justify-center py-5">
+            <div className="mb-5">
+              <p className="t-eyebrow text-red">Explore Futr</p>
+              <p className="mt-2 text-sm text-mist">Choose where you want to go.</p>
+            </div>
 
-          <div
-            className="mt-12 transition-[transform,opacity] duration-700 [transition-timing-function:var(--ease-out-expo)]"
-            style={{
-              transitionDelay: `${open ? 140 + NAV.length * 65 : 0}ms`,
-              transform: open ? 'none' : 'translateY(24px)',
-              opacity: open ? 1 : 0,
-            }}
-          >
-            <PrimaryCTA to={PRIMARY_CTA.to} size="lg" onClick={onClose} className="w-full sm:w-auto">
-              {PRIMARY_CTA.label}
-            </PrimaryCTA>
-            <p className="mt-8 t-small text-mist">
-              Building Brands. Optimizing Markets. Capturing Value.
-            </p>
+            <ul className="divide-y divide-white/10 border-y border-white/10">
+              {NAV.map((item, i) => (
+                <li key={item.to} className="overflow-hidden">
+                  <NavLink
+                    to={item.to}
+                    end={item.to === '/'}
+                    onClick={onClose}
+                    className={({ isActive }) =>
+                      [
+                        'group flex items-center justify-between gap-4 py-3.5 transition-[transform,opacity,color] duration-500 [transition-timing-function:var(--ease-out-expo)]',
+                        isActive ? 'text-white' : 'text-white/75 hover:text-white',
+                        open ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0',
+                      ].join(' ')
+                    }
+                    style={{ transitionDelay: `${open ? 100 + i * 45 : 0}ms` }}
+                  >
+                    <span className="flex min-w-0 items-center gap-4">
+                      <span className="t-eyebrow shrink-0 text-red/75">
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                      <span className="text-[1.125rem] font-semibold leading-snug tracking-[-0.015em] sm:text-[1.25rem]">
+                        {item.label}
+                      </span>
+                    </span>
+                    <span aria-hidden className="text-base text-white/35 transition-colors group-hover:text-red">
+                      ↗
+                    </span>
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+
+            <div
+              className="mt-6 flex flex-col gap-4 transition-[transform,opacity] duration-500 [transition-timing-function:var(--ease-out-expo)] sm:flex-row sm:items-center sm:justify-between"
+              style={{
+                transitionDelay: `${open ? 100 + NAV.length * 45 : 0}ms`,
+                transform: open ? 'none' : 'translateY(16px)',
+                opacity: open ? 1 : 0,
+              }}
+            >
+              <div>
+                <p className="text-sm font-medium text-white">Have a project in mind?</p>
+                <p className="mt-1 text-xs text-mist">Let’s find the right way forward.</p>
+              </div>
+              <PrimaryCTA to={PRIMARY_CTA.to} size="md" onClick={onClose} className="w-full sm:w-auto">
+                {PRIMARY_CTA.label}
+              </PrimaryCTA>
+            </div>
           </div>
         </nav>
       </div>
