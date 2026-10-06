@@ -20,15 +20,26 @@ export default function GrowPreview() {
   return (
     <Section tone="bone" pad="lg" aria-labelledby="grow-preview">
       <Container>
-        <SectionIntro
-          className="max-w-[46rem]"
-          eyebrow={grow.eyebrow}
-          heading={grow.heading}
-          headingId="grow-preview"
-          headingClassName="max-w-[20ch]"
-          body={grow.body}
-          bodyClassName="max-w-[58ch]"
-        />
+        {/*
+          Heading and supporting copy run side by side rather than stacked in a
+          46rem column — stacked, the right 60% of the band was empty at desktop
+          widths, which is the "excessive dead space" note.
+
+          `accent` paints the closing clause red. It is the line the section
+          turns on, and the brief's rule is red for the words that matter.
+        */}
+        <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-10">
+          <SectionIntro
+            className="lg:col-span-7"
+            eyebrow={grow.eyebrow}
+            heading={grow.heading}
+            accent={grow.accent}
+            headingId="grow-preview"
+          />
+          <RevealOnScroll delay={180} className="lg:col-span-5 lg:pb-1">
+            <p className="max-w-[56ch] t-body text-ash">{grow.body}</p>
+          </RevealOnScroll>
+        </div>
 
         <div className="mt-14 grid gap-8 md:grid-cols-2 md:gap-6">
           {grow.branches.map((branch, i) => (

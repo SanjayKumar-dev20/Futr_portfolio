@@ -11,7 +11,31 @@
  *   "Futr"     cap height ≈ 112px, sits at x=78
  *   dot        r ≈ 20px, centred at (477, 165)
  *   "MARKETS"  ≈ 46px, tracking ≈ 0.18em, baseline 264
+ *
+ * ── On the viewBox ────────────────────────────────────────────────────────
+ * The source artboard is 566 × 336 with generous bleed, and the mark only
+ * occupies the middle ~61% of it. Rendering that box at `height={36}` therefore
+ * drew a wordmark about 22px tall — the navbar logo the client reported as too
+ * small to read on a 1440p display. Shrinking it further would not help; the
+ * problem was never the height attribute, it was that most of the height was
+ * empty.
+ *
+ * So the viewBox is cropped to the ink. The numbers below are measured off the
+ * live render (getBBox, minus the font's ascent/descent padding, plus a small
+ * optical margin) rather than eyeballed:
+ *
+ *   x  74 → 498   ("Futr" left stem → right edge of the dot)
+ *   y  62 → 268   ("t" ascender → "MARKETS" baseline)
+ *
+ * Same artwork, same proportions, ~53% more apparent size at any given
+ * `height`. The constant is exported because the favicon and the OG-image
+ * script need to crop to the same box.
  */
+export const LOGO_VIEWBOX = { x: 68, y: 55, w: 436, h: 220 }
+
+const VB = `${LOGO_VIEWBOX.x} ${LOGO_VIEWBOX.y} ${LOGO_VIEWBOX.w} ${LOGO_VIEWBOX.h}`
+const ASPECT = LOGO_VIEWBOX.w / LOGO_VIEWBOX.h
+
 export default function Logo({
   variant = 'dark', // 'dark' = black wordmark for light backgrounds
   className = '',
@@ -22,9 +46,9 @@ export default function Logo({
 
   return (
     <svg
-      viewBox="0 0 566 336"
+      viewBox={VB}
       height={height}
-      width={(566 / 336) * height}
+      width={ASPECT * height}
       role="img"
       aria-label={title}
       className={className}

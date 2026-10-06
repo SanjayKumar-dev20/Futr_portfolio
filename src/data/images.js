@@ -30,7 +30,7 @@ export const IMAGES = {
   },
   packagingWarehouse: {
     src: `${base}/packaging-warehouse.webp`,
-    alt: 'Packaged goods being handled in a warehouse',
+    alt: 'A production worker sealing finished goods into packaging on a manufacturing line',
   },
   shopkeeper: {
     src: `${base}/shopkeeper.webp`,
@@ -44,9 +44,21 @@ export const IMAGES = {
     src: `${base}/street-commerce.webp`,
     alt: 'A small retail counter stocked with packaged goods',
   },
-  retailShelves: {
+  /**
+   * The B2B hero for every commerce-facing surface.
+   *
+   * Replaces `retail-shelves.webp` — a cramped, over-stocked corner grocery.
+   * The client's review called that shot out directly: it pictures the
+   * *maligai kadai* Futr is built to supply past, not the organised wholesale
+   * trade it sells into, and on a page headed "Lower Costs. Higher Quality."
+   * it argued against the copy. This is the same market, current premises:
+   * racked pallets, palletised FMCG, a loading bay, two operators working off
+   * a tablet.
+   *
+   */
+  wholesaleHub: {
     src: `${base}/south-india-wholesale.webp`,
-    alt: 'A modern wholesale distribution center in South India, with local business operators reviewing stock',
+    alt: 'Two business operators reviewing stock on a tablet in a modern South Indian FMCG distribution centre, with racked pallets and a loading bay behind them',
   },
   produceSeller: {
     src: `${base}/produce-seller.webp`,

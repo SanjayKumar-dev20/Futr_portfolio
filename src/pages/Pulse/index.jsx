@@ -79,7 +79,10 @@ export default function Pulse() {
               bodyClassName="max-w-[56ch]"
             />
 
-            <ul className="mt-14 grid gap-px bg-rule sm:grid-cols-2 lg:grid-cols-3">
+            <ul
+              className="fm-tiles mt-14 bg-rule"
+              style={{ '--fm-tile-min': '20rem', '--fm-tile-cols': 3 }}
+            >
               {PULSE_CATEGORIES.map((category, i) => (
                 <RevealOnScroll
                   as="li"

@@ -16,6 +16,25 @@ export const NAV = [
 
 export const PRIMARY_CTA = { label: 'Talk to Us', to: '/talk' }
 
+/**
+ * The three ways into Futr, as offered on the Talk page.
+ *
+ * Here rather than inside the Talk component because two unrelated places need
+ * the same labels: the page renders them as the path toggle, and the enquiry
+ * store writes the chosen one into the subject line of the notification the
+ * administrator receives. Keeping one list means the inbox can never disagree
+ * with the button the visitor actually pressed.
+ */
+export const CONTACT_PATHS = [
+  { id: 'manufacturer', label: 'Manufacturer' },
+  { id: 'business', label: 'Business' },
+  { id: 'investor', label: 'Investor' },
+]
+
+export const CONTACT_PATH_LABEL = Object.fromEntries(
+  CONTACT_PATHS.map(({ id, label }) => [id, label])
+)
+
 export const FOOTER_EXPLORE = [
   { label: 'Home', to: '/' },
   { label: 'The Futr Difference', to: '/difference' },

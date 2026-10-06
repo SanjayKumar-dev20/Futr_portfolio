@@ -21,11 +21,31 @@ import HOME from '../../../data/content/home'
  *   grid in → heading lines → body → CTAs → orbit labels → scroll indicator
  */
 
+/*
+  The four annotations that ring the globe.
+
+  These were positioned inside a 1440px-capped wrapper and pushed to its outer
+  corners, which put them in the window's corners rather than on the globe — the
+  "disjointed, spread too far out" note. The video is full-bleed `object-cover`,
+  so the only frame the globe is actually fixed to is the section itself; that
+  is what the percentages below are measured against.
+
+  Globe, as a share of the section at desktop: centre ≈ (74%, 48%), radius ≈ 23%
+  of the width and ≈ 40% of the height. Each badge is placed on that ellipse
+  rather than at a corner, so the set reads as labelling one object:
+
+           Products  ~60°          Manufacturers ~145°
+           Businesses ~-42°        Consumers     ~-142°
+
+  `flip` reverses the icon/label order for the two on the right-hand side. The
+  label then runs inward, toward the globe, instead of off the edge of the
+  window — which is what forced them so far out in the first place.
+*/
 const ORBIT = [
-  { label: 'Manufacturers', Icon: IconFactory, pos: 'left-[6%] top-[14%]', delay: 1150 },
-  { label: 'Products', Icon: IconCube, pos: 'right-[2%] top-[9%]', delay: 1250 },
-  { label: 'Businesses', Icon: IconStore, pos: 'right-[6%] bottom-[22%]', delay: 1350 },
-  { label: 'Consumers', Icon: IconUsers, pos: 'left-[2%] bottom-[14%]', delay: 1450 },
+  { label: 'Manufacturers', Icon: IconFactory, pos: 'left-[55%] top-[25%]', delay: 1150 },
+  { label: 'Products', Icon: IconCube, pos: 'right-[11%] top-[14%]', flip: true, delay: 1250 },
+  { label: 'Businesses', Icon: IconStore, pos: 'right-[9%] bottom-[25%]', flip: true, delay: 1350 },
+  { label: 'Consumers', Icon: IconUsers, pos: 'left-[56%] bottom-[20%]', delay: 1450 },
 ]
 
 export default function Hero() {
@@ -70,42 +90,47 @@ export default function Hero() {
 
       {/* ── Orbit labels ─────────────────────────────────────────────── */}
       <div aria-hidden className="pointer-events-none absolute inset-0 z-10 hidden lg:block">
-        <div className="relative mx-auto h-full w-full max-w-[1440px]">
-          <div className="absolute inset-y-0 right-0 w-[62%] xl:w-[58%]">
-            {ORBIT.map(({ label, Icon, pos, delay }) => (
-              <div
-                key={label}
-                className={`absolute flex items-center gap-3 ${pos}`}
-                style={riseIn(inView, delay, { distance: 12, duration: 900 })}
-              >
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-white/25 bg-void/60 text-white backdrop-blur-sm">
-                  <Icon size={19} />
-                </span>
-                <span className="t-eyebrow whitespace-nowrap text-white/85">{label}</span>
-              </div>
-            ))}
+        {ORBIT.map(({ label, Icon, pos, flip, delay }) => (
+          <div
+            key={label}
+            className={`absolute flex items-center gap-2.5 ${flip ? 'flex-row-reverse' : ''} ${pos}`}
+            style={riseIn(inView, delay, { distance: 12, duration: 900 })}
+          >
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/25 bg-void/55 text-white backdrop-blur-sm">
+              <Icon size={16} />
+            </span>
+            <span className="whitespace-nowrap text-[0.625rem] font-semibold uppercase leading-none tracking-[0.2em] text-white/80">
+              {label}
+            </span>
           </div>
-        </div>
+        ))}
       </div>
 
       {/* ── Copy ─────────────────────────────────────────────────────── */}
       <div className="relative z-20 flex min-h-[100svh] items-center pt-[var(--nav-h)]">
         <div className="fm-container w-full">
-          <div className="max-w-[56rem] lg:max-w-[48rem] xl:max-w-[52rem]">
+          {/*
+            One measure for the whole lockup, so the eyebrow, the two heading
+            lines and the body all start and end on the same two verticals. The
+            gaps are a deliberate 6 / 7 / 10 ramp: tight under the eyebrow
+            (it belongs to the heading), open under the heading, open again
+            before the actions.
+          */}
+          <div className="max-w-[46rem] xl:max-w-[52rem]">
             <p className="t-eyebrow text-white/70" style={riseIn(inView, 120, { distance: 8 })}>
               {HOME.hero.eyebrow}
             </p>
 
             <AnimatedHeading
               id="hero-heading"
-              className="mt-7 home-hero-heading"
+              className="mt-6 home-hero-heading"
               delay={320}
               step={110}
               lines={HOME.hero.lines}
             />
 
             <p
-              className="mt-7 max-w-[34rem] t-body text-white/70"
+              className="mt-7 max-w-[36rem] t-body text-white/70"
               style={riseIn(inView, copyAt(0))}
             >
               {HOME.hero.body}

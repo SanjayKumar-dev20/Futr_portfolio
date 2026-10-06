@@ -24,9 +24,18 @@ import HOME from '../../../data/content/home'
  * very big company."
  */
 
-/** Photography per panel, keyed to the framework's content order. */
+/**
+ * Photography per panel, keyed to the framework's content order.
+ *
+ * The businesses panel used to carry `shopkeeper` — an owner standing in a
+ * spice-market stall. The client's review was explicit that the old
+ * grocery-shop (*maligai kadai*) photography reads as the market Futr is
+ * replacing rather than the one it sells into, so this panel now shows the
+ * modern South Indian FMCG distribution floor: racked pallets, organised
+ * packaged goods, a loading bay. Same scale of operator, current premises.
+ */
 const PANEL_IMAGES = {
-  businesses: IMAGES.shopkeeper,
+  businesses: IMAGES.wholesaleHub,
   manufacturers: IMAGES.manufacturingFloor,
 }
 
@@ -89,15 +98,37 @@ function Panel({ eyebrow, heading, subline, body, cta, image, side, index }) {
         <div className="glow-red absolute -bottom-20 left-1/4 h-72 w-72 opacity-0 transition-opacity duration-700 group-hover:opacity-70" />
       </div>
 
-      {/* Copy */}
-      <div className="relative flex items-end justify-between gap-6 p-8 md:p-12 lg:p-14">
+      {/*
+        Copy.
+
+        `fm-split-pad` rather than a flat `p-14`: this band is full-bleed, so a
+        fixed padding started the headline 58px from the window edge while the
+        sections above and below it started 304px in. The class resolves to the
+        same vertical guide the container uses, so the x-axis no longer jumps
+        between sections. See src/styles/globals.css.
+      */}
+      <div
+        data-side={side}
+        className="fm-split-pad relative flex items-end justify-between gap-6"
+      >
         <div
-          className="max-w-[26rem]"
+          className="max-w-[32rem]"
           style={riseIn(inView, 160 + index * 120, { distance: 28, duration: 900 })}
         >
+          {/*
+            Deliberately uneven vertical rhythm, per the Canva reference:
+
+              eyebrow  ──mt-3──  headline      (label belongs to the headline)
+              headline ──mt-5──  subline       (new thought, needs air)
+              subline  ──mt-3──  body
+                       ──mt-8──  action
+
+            Equal gaps everywhere was the note — it reads as four unrelated
+            lines of text rather than one block with a clear top.
+          */}
           <p className="t-eyebrow text-white/70">{eyebrow}</p>
 
-          <h2 className="mt-4 t-display">
+          <h2 className="mt-3 t-display">
             {heading.map((line) => (
               <span key={line} className="block">
                 {line}
@@ -106,12 +137,12 @@ function Panel({ eyebrow, heading, subline, body, cta, image, side, index }) {
           </h2>
 
           {subline && (
-            <p className="mt-3 text-[0.9375rem] font-semibold text-white/85">{subline}</p>
+            <p className="mt-5 text-[1rem] font-semibold text-white/90">{subline}</p>
           )}
 
-          <p className="mt-3 max-w-[24rem] t-small text-white/70">{body}</p>
+          <p className="mt-3 max-w-[30rem] t-small text-white/70">{body}</p>
 
-          <PrimaryCTA to={cta.to} size="md" className="mt-7">
+          <PrimaryCTA to={cta.to} size="md" className="mt-8">
             {cta.label}
           </PrimaryCTA>
         </div>

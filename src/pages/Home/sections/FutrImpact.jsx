@@ -8,9 +8,16 @@ import HOME from '../../../data/content/home'
  * Section 03 — The Futr Impact.
  *
  * Editorial blocks, not a card grid: the oversized index numeral leads, the
- * icon sits beside it, and the copy hangs below. The brief is explicit that
- * generic three-up card grids are off-limits, so the heading takes a full
- * column of its own on the left and the three blocks run beside it.
+ * icon sits beside it, and the copy hangs below.
+ *
+ * Layout note. The heading used to take a sticky 4-of-12 column with the three
+ * blocks crammed into the remaining 8, which left each card around 275px wide.
+ * At that measure a two-word title like "Optimized Products" broke onto three
+ * lines and the body copy ran four words to a line — the client's "cards shrink
+ * into small, isolated boxes". The intro now runs across the top as a lead
+ * (heading left, supporting paragraph right, so the band is not half empty) and
+ * the blocks get the full measure underneath, which is about 420px each. Titles
+ * land on the two lines they were written for.
  */
 
 /** Copy comes from the Creative Framework (pages 12–13); icons are ours. */
@@ -22,55 +29,58 @@ export default function FutrImpact() {
   return (
     <Section tone="bone" pad="lg" aria-labelledby="impact-heading">
       <Container>
-        <div className="grid gap-12 lg:grid-cols-12 lg:gap-8">
-          {/* Heading column */}
+        {/* Lead: heading and its paragraph side by side, baselines aligned. */}
+        <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-10">
           <SectionIntro
-            className="lg:col-span-4 lg:sticky lg:top-32 lg:self-start"
+            className="lg:col-span-6"
             eyebrow={impact.eyebrow}
-            heading={impact.heading}
+            headingLines={impact.headingLines}
             headingId="impact-heading"
-            headingClassName="max-w-[14ch]"
-            body={impact.body}
-            bodyClassName="max-w-[44ch]"
           />
+          <RevealOnScroll delay={180} className="lg:col-span-6 lg:col-start-7 lg:pb-1">
+            <p className="max-w-[62ch] t-body text-ash">{impact.body}</p>
+          </RevealOnScroll>
+        </div>
 
-          {/* Blocks */}
-          <div className="grid gap-4 sm:grid-cols-2 lg:col-span-8 lg:grid-cols-3 lg:gap-5">
-            {impact.blocks.map(({ title, body, to }, i) => {
-              const Icon = ICONS[i]
-              return (
-                <RevealOnScroll key={title.join(' ')} delay={140 + i * 110} className="h-full">
-                  <article className="card-edge group flex h-full flex-col p-7 md:p-8">
-                    <header className="flex items-start justify-between gap-4">
-                      <span
-                        aria-hidden
-                        className="t-mono-num text-chalk transition-colors duration-500 group-hover:text-rule"
-                      >
-                        {String(i + 1).padStart(2, '0')}
+        {/* Blocks. `fm-autogrid` rather than a column count, so the cards hold
+            their minimum measure as the viewport (or the zoom level) changes. */}
+        <div className="fm-autogrid mt-14 md:mt-16">
+          {impact.blocks.map(({ title, body, to }, i) => {
+            const Icon = ICONS[i]
+            return (
+              <RevealOnScroll key={title.join(' ')} delay={140 + i * 110} className="h-full">
+                <article className="card-edge group flex h-full flex-col p-8 md:p-9">
+                  <header className="flex items-start justify-between gap-4">
+                    <span
+                      aria-hidden
+                      className="t-mono-num text-chalk transition-colors duration-500 group-hover:text-rule"
+                    >
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span className="mt-1 text-red">
+                      <Icon size={30} />
+                    </span>
+                  </header>
+
+                  {/* Title tight, body given room — the hierarchy the Canva
+                      reference asks for, not three evenly-spaced lines. */}
+                  <h3 className="mt-10 t-card-title">
+                    {title.map((line) => (
+                      <span key={line} className="block">
+                        {line}
                       </span>
-                      <span className="mt-1 text-red">
-                        <Icon size={30} />
-                      </span>
-                    </header>
+                    ))}
+                  </h3>
 
-                    <h3 className="mt-10 t-h3">
-                      {title.map((line) => (
-                        <span key={line} className="block">
-                          {line}
-                        </span>
-                      ))}
-                    </h3>
+                  <p className="mt-5 max-w-[46ch] t-small text-ash">{body}</p>
 
-                    <p className="mt-3 t-small text-ash">{body}</p>
-
-                    <div className="mt-auto flex justify-end pt-8">
-                      <CircleArrow to={to} tone="red" size={38} aria-label={title.join(' ')} />
-                    </div>
-                  </article>
-                </RevealOnScroll>
-              )
-            })}
-          </div>
+                  <div className="mt-auto flex justify-end pt-8">
+                    <CircleArrow to={to} tone="red" size={38} aria-label={title.join(' ')} />
+                  </div>
+                </article>
+              </RevealOnScroll>
+            )
+          })}
         </div>
       </Container>
     </Section>

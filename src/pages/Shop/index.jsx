@@ -45,20 +45,27 @@ export default function Shop() {
       <Section tone="light" pad="lg" aria-labelledby="product-standard">
         <Container>
           <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
+            {/* Explicit lines rather than a `max-w` in `ch`. "Cost-engineered."
+                carries a real hyphen, which the browser treats as a legal break
+                point — so left to the measure it split as "Tested. Cost-" /
+                "engineered." One word, two lines, mid-compound. */}
             <SectionIntro
               className="lg:col-span-5"
               eyebrow="The product standard"
-              heading="Standardized. Tested. Cost-engineered."
+              headingLines={['Standardized.', 'Tested.', 'Cost-engineered.']}
               headingId="product-standard"
-              headingClassName="max-w-[14ch]"
               body="Every Futr product is built to deliver consistent quality and measurable value — helping businesses get more from every purchase."
               bodyClassName="max-w-[44ch]"
             />
 
             <div className="lg:col-span-6 lg:col-start-7">
+              {/* Packaging line rather than a shop floor: the heading is about
+                  the product standard, so the picture is where the standard is
+                  actually applied. The corner-grocery shot this replaced was
+                  the one the client's review flagged. */}
               <ImageFrame
-                src={IMAGES.retailShelves.src}
-                alt={IMAGES.retailShelves.alt}
+                src={IMAGES.packagingWarehouse.src}
+                alt={IMAGES.packagingWarehouse.alt}
                 ratio="16/10"
                 rule
               />
@@ -114,7 +121,10 @@ export default function Shop() {
               ))}
             </div>
           ) : (
-            <ul className="mt-14 grid gap-px bg-rule sm:grid-cols-2 lg:grid-cols-3">
+            <ul
+              className="fm-tiles mt-14 bg-rule"
+              style={{ '--fm-tile-min': '20rem', '--fm-tile-cols': 3 }}
+            >
               {PRODUCT_CATEGORIES.map((category, i) => (
                 <RevealOnScroll
                   as="li"

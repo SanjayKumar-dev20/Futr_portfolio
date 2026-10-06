@@ -141,18 +141,32 @@ export function Eyebrow({ children, tone = 'red', className = '', rule = true })
 /**
  * Section heading with optional red-accented words.
  *
- * <SectionHeading accent="Direct Commerce">
- *   Transforming Markets with Direct Commerce
- * </SectionHeading>
+ * Three ways to write one, in increasing order of control:
  *
- * The accent substring is lifted out and painted red — this is the brief's
- * "red emphasis for important words" rule, applied declaratively so a writer
- * can change the emphasis without touching markup.
+ *   <SectionHeading>Insights That Move Markets.</SectionHeading>
+ *
+ *   <SectionHeading accent="Direct Commerce">
+ *     Transforming Markets with Direct Commerce
+ *   </SectionHeading>
+ *
+ *   <SectionHeading lines={['Redefining Markets.',
+ *                           { text: 'Creating Value.', accent: true }]} />
+ *
+ * `accent` lifts a substring out and paints it red — the brief's "red emphasis
+ * for important words" rule, declared by a writer without touching markup.
+ *
+ * `lines` is for the headings whose break points are part of the design rather
+ * than a consequence of the measure. "Redefining Markets. / Creating Value."
+ * has to break after the first sentence at every width; leaving that to a
+ * `max-w-[14ch]` gave three ragged lines on a wide screen and the wrong two on
+ * a narrow one. The same shape as AnimatedHeading's `lines`, deliberately, so
+ * the two are interchangeable in content files.
  */
 export function SectionHeading({
   as: Tag = 'h2',
   size = 'h2', // hero | display | h2 | h3
   accent,
+  lines,
   underline = false,
   className = '',
   children,
@@ -161,19 +175,29 @@ export function SectionHeading({
   ...rest
 }) {
   const sizes = { hero: 't-hero', display: 't-display', h2: 't-h2', h3: 't-h3' }
+  const cls = `${sizes[size]} ${className}`
+
+  if (Array.isArray(lines)) {
+    return (
+      <Tag className={cls} {...rest}>
+        {lines.map((line, i) => {
+          const text = typeof line === 'string' ? line : line.text
+          const isAccent = typeof line === 'object' && line.accent
+          return (
+            <span key={i} className={`block ${isAccent ? 'text-red' : ''}`}>
+              {text}
+            </span>
+          )
+        })}
+      </Tag>
+    )
+  }
+
   const text = typeof children === 'string' ? children : null
 
   if (!text || !accent || !text.includes(accent)) {
-    if (text === 'Redefining Markets. Creating Value.') {
-      return (
-        <Tag className={`${sizes[size]} ${className}`} {...rest}>
-          <span className="block">Redefining Markets.</span>
-          <span className="block">Creating <span className="text-red">Value.</span></span>
-        </Tag>
-      )
-    }
     return (
-      <Tag className={`${sizes[size]} ${className}`} {...rest}>
+      <Tag className={cls} {...rest}>
         {children}
       </Tag>
     )
@@ -181,7 +205,7 @@ export function SectionHeading({
 
   const [before, after] = text.split(accent)
   return (
-    <Tag className={`${sizes[size]} ${className}`} {...rest}>
+    <Tag className={cls} {...rest}>
       {before}
       <span className={`text-red ${underline ? 'red-underline' : ''}`}>{accent}</span>
       {after}

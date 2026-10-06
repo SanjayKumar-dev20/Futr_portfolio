@@ -116,13 +116,37 @@ export function ProcessSteps({ steps = [], tone = 'light', className = '' }) {
   )
 }
 
-/** Hairline-bordered advantage cards. Four-up on desktop, two-up on tablet. */
-export function AdvantageGrid({ items = [], tone = 'light', columns = 4, className = '' }) {
+/**
+ * Hairline-bordered advantage cards.
+ *
+ * `columns` is a ceiling, not an instruction. The track count used to be a flat
+ * `lg:grid-cols-4`, which is correct when the grid has the full measure and
+ * wrong everywhere else: the Manufacturers page puts a three-up grid inside a
+ * half-width column, which worked out at 211px per card — 147px of content once
+ * the padding is off, and a 28px card title does not fit in 147px. The word
+ * "Predictable" alone is 166px.
+ *
+ * So the tracks come from `.fm-tiles` (see src/styles/globals.css): sized from a
+ * legible minimum, with the column count falling out of the space available and
+ * capped at `columns` when there is room for them all. One rule, correct in a
+ * full-width band and in a half-width column, degrading 4 → 3 → 2 → 1 as the
+ * viewport (or the zoom level) tightens without a breakpoint for each case.
+ */
+export function AdvantageGrid({
+  items = [],
+  tone = 'light',
+  columns = 4,
+  /** Smallest a card may get before the grid drops a track. */
+  min = '17rem',
+  className = '',
+}) {
   const dark = tone === 'dark'
-  const cols = { 2: 'sm:grid-cols-2', 3: 'sm:grid-cols-2 lg:grid-cols-3', 4: 'sm:grid-cols-2 lg:grid-cols-4' }
 
   return (
-    <div className={`grid gap-px ${cols[columns]} ${dark ? 'bg-white/10' : 'bg-rule'} ${className}`}>
+    <div
+      className={`fm-tiles ${dark ? 'bg-white/10' : 'bg-rule'} ${className}`}
+      style={{ '--fm-tile-min': min, '--fm-tile-cols': columns }}
+    >
       {items.map((item, i) => (
         <RevealOnScroll
           key={item.title}

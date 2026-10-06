@@ -44,19 +44,28 @@ export default function Opportunity() {
             tone="dark"
           />
 
-          <ul className="grid grid-cols-2 gap-x-6 gap-y-9 lg:col-span-8 lg:grid-cols-4 lg:gap-x-0">
+          {/*
+            Four-up only from `xl`.
+
+            At `lg` the eight-column half of a 960px measure splits into four
+            160px tracks, and 56px of horizontal padding leaves 104px of content
+            — narrower than the word "Opportunities", which needs 127px. The
+            strip stays two-up through the tablet range and opens out when there
+            is room for it.
+          */}
+          <ul className="grid grid-cols-2 gap-x-6 gap-y-9 lg:col-span-8 xl:grid-cols-4 xl:gap-x-0">
             {ITEMS.map(({ Icon, value, label }, i) => (
               <RevealOnScroll
                 as="li"
                 key={label}
                 delay={120 + i * 90}
-                className="relative lg:px-7 lg:first:pl-0"
+                className="relative xl:px-7 xl:first:pl-0"
               >
                 {/* hairline divider */}
                 {i > 0 && (
                   <span
                     aria-hidden
-                    className="absolute -left-0 top-1 hidden h-[calc(100%-0.5rem)] w-px bg-white/12 lg:block"
+                    className="absolute -left-0 top-1 hidden h-[calc(100%-0.5rem)] w-px bg-white/12 xl:block"
                   />
                 )}
                 <span className="block text-red">

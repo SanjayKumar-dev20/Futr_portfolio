@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { CONTACT } from '../data/navigation'
+import { CONTACT, CONTACT_PATH_LABEL } from '../data/navigation'
 import { buildMailto, hasBackend, submitEnquiry } from '../lib/enquiry'
 import { LIMITS, RULES, clampToLimits, validate } from '../lib/contact-schema'
 
@@ -50,6 +50,28 @@ const MIN_FILL_SECONDS = 3
  */
 const RESUBMIT_COOLDOWN_MS = 4000
 
+/**
+ * The subject line, when the visitor was never asked for one.
+ *
+ * The redesigned Talk page asks for five things — name, company, email, phone,
+ * message — and nothing else. "What is this about" is already answered by the
+ * path the visitor selected, so asking again is a sixth field that buys the
+ * administrator nothing.
+ *
+ * The field itself stays in the schema. It is what the notification threads on,
+ * and the Apps Script re-validates it server-side; dropping it would mean
+ * changing the sheet, the script and the rules to delete information the inbox
+ * actually uses. So it is derived here instead, from the two values that make
+ * an enquiry findable later: who they said they were, and what they are called.
+ *
+ * Clamped, because `LIMITS.subject` is 200 and a 120-character name is legal.
+ */
+function derivedSubject(userType, name) {
+  const role = CONTACT_PATH_LABEL[userType] ?? 'General'
+  const who = name?.trim()
+  return `${role} enquiry${who ? ` — ${who}` : ''}`.slice(0, LIMITS.subject)
+}
+
 export const useContactStore = create((set, get) => ({
   values: { ...EMPTY },
   errors: {},
@@ -87,15 +109,23 @@ export const useContactStore = create((set, get) => ({
    * focus to the first invalid control.
    */
   submit: async () => {
-    const { values, userType, startedAt, status, lastSubmitAt } = get()
+    const { values: entered, userType, startedAt, status, lastSubmitAt } = get()
 
     // Already in flight. A second submit would race the first and can only
     // produce a duplicate.
     if (status === 'loading') return { ok: false, errors: {} }
 
+    // Fill the subject the form no longer asks for. `||` not `??` on purpose:
+    // an empty string is exactly the case this is here to handle.
+    const values = {
+      ...entered,
+      subject: entered.subject?.trim() || derivedSubject(userType, entered.name),
+    }
+
     const errors = validate(values)
 
     set({
+      values,
       errors,
       touched: Object.fromEntries(Object.keys(RULES).map((k) => [k, true])),
     })
