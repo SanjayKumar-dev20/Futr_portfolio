@@ -45,8 +45,8 @@ export const IMAGES = {
     alt: 'A small retail counter stocked with packaged goods',
   },
   retailShelves: {
-    src: `${base}/retail-shelves.webp`,
-    alt: 'Densely stocked retail shelving',
+    src: `${base}/south-india-wholesale.webp`,
+    alt: 'A modern wholesale distribution center in South India, with local business operators reviewing stock',
   },
   produceSeller: {
     src: `${base}/produce-seller.webp`,

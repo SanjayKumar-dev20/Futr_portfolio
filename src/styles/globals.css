@@ -94,7 +94,7 @@
 :root {
   --fm-red: #ff0b2a;
   --fm-graphite: #0a0a0b;
-  --fm-container: 1440px;
+  --fm-container: clamp(1440px, 92vw, 1760px);
   --fm-pad: 4rem;
   --nav-h: 5.5rem;
 }

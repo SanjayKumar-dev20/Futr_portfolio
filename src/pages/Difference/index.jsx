@@ -9,6 +9,7 @@ import { Container, RevealOnScroll, Section } from '../../components/system'
 import { PrimaryCTA, SecondaryCTA } from '../../components/buttons'
 import { IconCube, IconFactory, IconStore, IconTruck, IconUsers, IconChart } from '../../components/icons'
 import DIFFERENCE from '../../data/content/difference'
+import SystemDiagram from '../../components/graphics/SystemDiagram'
 import { useSeo } from '../../lib/seo'
 
 /**
@@ -39,9 +40,15 @@ export default function Difference() {
       {/* ── Lead statement ───────────────────────────────────────────── */}
       <Section tone="light" pad="md">
         <Container>
-          <RevealOnScroll>
-            <p className="max-w-[60ch] t-body text-ash">{hero.lead}</p>
-          </RevealOnScroll>
+          <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-12">
+            <RevealOnScroll className="lg:col-span-5">
+              <p className="max-w-[60ch] t-body text-ash">{hero.lead}</p>
+            </RevealOnScroll>
+            <div className="lg:col-span-7">
+              <SystemDiagram className="mx-auto max-w-[48rem]" />
+              <p className="mt-2 text-center t-eyebrow text-ash">Manufacturing <span className="mx-2 text-red">/</span> Supply <span className="mx-2 text-red">/</span> Market</p>
+            </div>
+          </div>
         </Container>
       </Section>
 

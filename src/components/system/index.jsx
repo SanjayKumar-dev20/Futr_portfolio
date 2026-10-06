@@ -164,6 +164,14 @@ export function SectionHeading({
   const text = typeof children === 'string' ? children : null
 
   if (!text || !accent || !text.includes(accent)) {
+    if (text === 'Redefining Markets. Creating Value.') {
+      return (
+        <Tag className={`${sizes[size]} ${className}`} {...rest}>
+          <span className="block">Redefining Markets.</span>
+          <span className="block">Creating <span className="text-red">Value.</span></span>
+        </Tag>
+      )
+    }
     return (
       <Tag className={`${sizes[size]} ${className}`} {...rest}>
         {children}

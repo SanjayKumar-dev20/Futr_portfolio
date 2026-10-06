@@ -16,7 +16,7 @@ export const HOME = {
 
   hero: {
     eyebrow: 'Optimizing Markets. Building Brands. Capturing Value.',
-    lines: ['Transforming Markets', { text: 'with ', accentSuffix: 'Direct Commerce' }],
+    lines: ['Transforming Markets with', { text: 'Direct Commerce', accent: true }],
     body: 'Reshaping the future of commerce through direct connections, smarter supply chains and shared growth — shaped by trust, efficiency and streamlined markets.',
   },
 

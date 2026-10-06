@@ -25,7 +25,7 @@ export default function Footer() {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-12 lg:gap-8">
           {/* Column 1 — Brand */}
           <div className="lg:col-span-4">
-            <Logo variant="light" height={34} />
+            <Logo variant="light" height={42} />
             <p className="mt-6 max-w-[22ch] text-[0.9375rem] font-medium leading-snug">
               Transforming Markets
               <br />
@@ -135,4 +135,3 @@ export default function Footer() {
 const FooterHeading = ({ children }) => (
   <h2 className="t-eyebrow text-white/45">{children}</h2>
 )
-

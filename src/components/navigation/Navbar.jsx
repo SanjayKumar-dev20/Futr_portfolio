@@ -49,18 +49,18 @@ export default function Navbar() {
         ].join(' ')}
       >
         <div
-          className={`fm-container flex items-center justify-between transition-[height] duration-500 ${
+          className={`fm-container relative flex items-center justify-between transition-[height] duration-500 ${
             solid ? 'h-16 md:h-[4.5rem]' : 'h-[var(--nav-h)]'
           }`}
         >
           {/* Brand */}
           <NavLink to="/" aria-label="Futr Markets — home" className="shrink-0">
-            <Logo variant="light" height={solid ? 26 : 30} className="transition-all duration-500" />
+            <Logo variant="light" height={solid ? 32 : 36} className="transition-all duration-500" />
           </NavLink>
 
           {/* Desktop nav */}
-          <nav aria-label="Primary" className="hidden lg:block">
-            <ul className="flex items-center gap-8">
+          <nav aria-label="Primary" className="absolute left-1/2 hidden -translate-x-1/2 lg:block">
+            <ul className="flex items-center gap-6 xl:gap-8">
               {NAV.map((item) => (
                 <li key={item.to}>
                   <NavLink
