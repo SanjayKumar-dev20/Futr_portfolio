@@ -49,8 +49,15 @@
  *   · Error disclosure — internal failures are logged, never returned.
  */
 
-/** Where new enquiries are emailed. Replace before deploying. */
-var NOTIFY_TO = 'info@futrmarkets.com'
+/**
+ * Where new enquiries are emailed.
+ *
+ * This file is pasted into the Apps Script editor by hand, so editing it here
+ * changes nothing until it is re-pasted and re-deployed — see
+ * CONTACT-FORM-SETUP.md. If enquiries stop arriving after a contact change,
+ * this is the copy that was missed.
+ */
+var NOTIFY_TO = 'growth@futrmarkets.in'
 
 /** Tab name inside the bound spreadsheet. */
 var SHEET_NAME = 'Enquiries'

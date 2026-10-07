@@ -47,11 +47,23 @@ export const FOOTER_EXPLORE = [
   { label: 'Talk', to: '/talk' },
 ]
 
-/* Placeholders — flagged in HANDOVER.md as client-supplied content. */
+/**
+ * The real contact details, supplied by the client 6 Oct 2026.
+ *
+ * These replace the placeholders HANDOVER.md flagged. One object, read by the
+ * footer, the Talk page and the enquiry store's mailto fallback — so a future
+ * change lands everywhere from here.
+ *
+ * `phone` is stored in the national grouping Indian numbers are normally read
+ * in, with the +91 country code the `tel:` href needs in order to dial from
+ * outside India. The client gave the ten digits alone; CONTACT_LINKS strips the
+ * formatting back out, so the display string and the dial string cannot drift.
+ */
 export const CONTACT = {
-  email: 'info@futrmarkets.com',
-  phone: '+91 00000 00000',
-  address: 'Chennai, Tamil Nadu, India',
+  email: 'growth@futrmarkets.in',
+  phone: '+91 76674 91156',
+  address:
+    'Anya Enclave, Thiverkadu Co-operative Nagar, Senneer Kuppam, Thiruverkadu, Tamil Nadu 600077',
 }
 
 /**

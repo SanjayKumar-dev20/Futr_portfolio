@@ -30,10 +30,11 @@ Nothing here costs money, and the data stays in your own Google Drive.
 4. Near the top you will see this line:
 
    ```js
-   var NOTIFY_TO = 'info@futrmarkets.com'
+   var NOTIFY_TO = 'growth@futrmarkets.in'
    ```
 
-   Change it to the address that should receive enquiries.
+   That is the address enquiries will be sent to. Change it only if they should
+   go somewhere else.
 5. Click the **save** icon.
 
 ## Step 3 — Publish it
