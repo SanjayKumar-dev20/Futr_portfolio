@@ -63,7 +63,7 @@ export const CONTACT = {
   email: 'growth@futrmarkets.in',
   phone: '+91 76674 91156',
   address:
-    'Anya Enclave, Thiverkadu Co-operative Nagar, Senneer Kuppam, Thiruverkadu, Tamil Nadu 600077',
+    'Anya Enclave, Thiruverkadu Co-operative Nagar, Senneer Kuppam, Thiruverkadu, Tamil Nadu 600077',
 }
 
 /**
