@@ -16,7 +16,7 @@ export const HOME = {
 
   hero: {
     eyebrow: 'Optimizing Markets. Building Brands. Capturing Value.',
-    lines: ['Transforming Markets', { text: 'with ', accentSuffix: 'Direct Commerce' }],
+    lines: ['Transforming Markets with', { text: 'Direct Commerce', accent: true }],
     body: 'Reshaping the future of commerce through direct connections, smarter supply chains and shared growth — shaped by trust, efficiency and streamlined markets.',
   },
 
@@ -45,7 +45,9 @@ export const HOME = {
   /** Section 03 — Futr Impact. */
   impact: {
     eyebrow: 'The Futr Impact',
-    heading: 'Redefining Markets. Creating Value.',
+    // Two lines, always — the break after the first sentence is the design, not
+    // a side effect of however wide the column happens to be.
+    headingLines: ['Redefining Markets.', { text: 'Creating Value.', accent: true }],
     body: 'Futr Markets transforms how markets work — cutting inefficiencies, unlocking smarter supply and driving shared progress. We enable manufacturers, businesses and consumers to thrive together through lower costs, higher quality and lasting trust, creating a marketplace where efficiency fuels growth and every connection builds long-term value.',
     blocks: [
       {
@@ -80,6 +82,8 @@ export const HOME = {
   grow: {
     eyebrow: "Let's Grow",
     heading: "Let's Grow Together — because in a smarter market, growth is never one-sided.",
+    /** Painted red in the heading. Must appear verbatim in `heading`. */
+    accent: 'growth is never one-sided',
     body: 'Futr Markets builds structured pathways for growth, connecting manufacturing strength with entrepreneurial drive. Whether you create products or move them, we ensure your growth is backed by systems built for scale, consistency and opportunity.',
     branches: [
       {

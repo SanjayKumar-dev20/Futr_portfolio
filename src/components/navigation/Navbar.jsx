@@ -5,13 +5,14 @@ import { PrimaryCTA } from '../buttons'
 import { IconClose, IconMenu } from '../icons'
 import { NAV, PRIMARY_CTA } from '../../data/navigation'
 import { useFocusTrap, useScrollLock, useScrolled } from '../../hooks'
-import { useUIStore, selectMenuOpen } from '../../stores/ui'
+import { useUIStore, selectMenuOpen, selectNavTone } from '../../stores/ui'
 
 export default function Navbar() {
   const scrolled = useScrolled()
   // Shared rather than local: the overlay renders from it, the router closes
   // it, and the scroll-lock effect reads it.
   const open = useUIStore(selectMenuOpen)
+  const navTone = useUIStore(selectNavTone)
   const toggleMenu = useUIStore((s) => s.toggleMenu)
   const closeMenu = useUIStore((s) => s.closeMenu)
   const { pathname } = useLocation()
@@ -34,8 +35,11 @@ export default function Navbar() {
   }, [open, closeMenu])
 
   // The hero is dark, so the bar starts transparent with white type and only
-  // adopts a surface once the user has scrolled past it.
-  const solid = scrolled || open
+  // adopts a surface once the user has scrolled past it. A page that opens on a
+  // light surface says so (useNavTone) and gets the solid treatment from the
+  // first frame — otherwise its white wordmark and white links are drawn on
+  // #f7f7f5 and are, quite literally, invisible.
+  const solid = scrolled || open || navTone === 'light'
 
   return (
     <>
@@ -48,19 +52,55 @@ export default function Navbar() {
             : 'border-b border-transparent bg-transparent',
         ].join(' ')}
       >
+        {/*
+          Three slots: brand, links, actions.
+
+          The links used to be `absolute left-1/2 -translate-x-1/2`, which
+          centres them on the *window* — not between the two things either side
+          of them. The wordmark is ~90px wide and the CTA ~140px, so the gap the
+          menu sits in is lopsided by that difference and the whole row read as
+          shunted left, which is the review note. Making the nav the flex row's
+          only growing child centres it in the space that is actually left over,
+          which is what "perfectly between the logo and Talk to Us" means.
+
+          Both outer slots are `shrink-0`: letting them compress would hand the
+          asymmetry straight back at tablet widths.
+        */}
         <div
-          className={`fm-container flex items-center justify-between transition-[height] duration-500 ${
-            solid ? 'h-16 md:h-[4.5rem]' : 'h-[var(--nav-h)]'
+          className={`fm-container relative flex items-center gap-6 transition-[height] duration-500 ${
+            solid ? 'h-[4.5rem] md:h-20' : 'h-[var(--nav-h)]'
           }`}
         >
-          {/* Brand */}
+          {/*
+            Brand.
+
+            Sized in CSS, not through the `height` attribute, because the bar
+            itself is not one height: `--nav-h` is 5.5rem on desktop and 4rem on
+            a phone. A single 44px mark is right in an 88px bar and crowded in a
+            64px one, with 10px of clearance top and bottom. A CSS `height`
+            outranks the presentational attribute, and `w-auto` lets the width
+            follow the viewBox rather than being pinned by the attribute — so
+            the proportions are preserved at every step.
+
+            The `height` prop stays as the intrinsic size, which is what the
+            browser uses to reserve space before the stylesheet applies.
+          */}
           <NavLink to="/" aria-label="Futr Markets — home" className="shrink-0">
-            <Logo variant="light" height={solid ? 26 : 30} className="transition-all duration-500" />
+            <Logo
+              variant="light"
+              height={44}
+              className={`w-auto transition-all duration-500 ${
+                solid ? 'h-8 md:h-9 lg:h-10' : 'h-8 md:h-10 lg:h-11'
+              }`}
+            />
           </NavLink>
 
           {/* Desktop nav */}
-          <nav aria-label="Primary" className="hidden lg:block">
-            <ul className="flex items-center gap-8">
+          <nav
+            aria-label="Primary"
+            className="hidden min-w-0 flex-1 justify-center lg:flex"
+          >
+            <ul className="flex items-center gap-6 xl:gap-9">
               {NAV.map((item) => (
                 <li key={item.to}>
                   <NavLink
@@ -102,7 +142,7 @@ export default function Navbar() {
             so it is gone until there is something to search. Re-adding it is a
             handful of lines once that exists.
           */}
-          <div className="flex items-center gap-2 md:gap-4">
+          <div className="ml-auto flex shrink-0 items-center gap-2 md:gap-4 lg:ml-0">
             <PrimaryCTA to={PRIMARY_CTA.to} size="md" className="hidden sm:inline-flex">
               {PRIMARY_CTA.label}
             </PrimaryCTA>

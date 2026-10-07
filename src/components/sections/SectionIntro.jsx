@@ -16,6 +16,8 @@ export default function SectionIntro({
   eyebrow,
   eyebrowTone = 'red',
   heading,
+  /** Explicit line breaks, when the break point is design rather than measure. */
+  headingLines,
   headingId,
   headingSize = 'display',
   accent,
@@ -45,13 +47,23 @@ export default function SectionIntro({
         </RevealOnScroll>
       )}
 
-      {heading && (
+      {/*
+        `mt-4` under the eyebrow, `mt-6` over the body.
+
+        Not an oversight that these differ. The eyebrow is a label *for* the
+        heading and belongs to it, so the gap there is tight; the body is a
+        separate thought and gets room. Setting both to the same value — which
+        is what this did — flattens the block into three evenly-spaced lines
+        with no hierarchy, which is exactly the Canva note on the feature cards.
+      */}
+      {(heading || headingLines) && (
         <RevealOnScroll delay={nextDelay()}>
           <SectionHeading
             id={headingId}
             size={headingSize}
             accent={accent}
-            className={`mt-5 ${headingClassName}`}
+            lines={headingLines}
+            className={`mt-4 ${headingClassName}`}
           >
             {heading}
           </SectionHeading>

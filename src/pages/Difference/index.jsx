@@ -9,6 +9,8 @@ import { Container, RevealOnScroll, Section } from '../../components/system'
 import { PrimaryCTA, SecondaryCTA } from '../../components/buttons'
 import { IconCube, IconFactory, IconStore, IconTruck, IconUsers, IconChart } from '../../components/icons'
 import DIFFERENCE from '../../data/content/difference'
+import SystemDiagram from '../../components/graphics/SystemDiagram'
+import DirectFlow from '../../components/graphics/DirectFlow'
 import { useSeo } from '../../lib/seo'
 
 /**
@@ -36,12 +38,26 @@ export default function Difference() {
         </SecondaryCTA>
       </PageHero>
 
-      {/* ── Lead statement ───────────────────────────────────────────── */}
+      {/* ── Lead statement ─────────────────────────────────────────────
+          The lead paragraph and the isometric city sat alone in this band and
+          left most of it white, which is the review note on this page. The flow
+          strip below them states the page's argument as a diagram — the chain
+          being removed, and the route that replaces it — so the white space is
+          carrying the idea rather than waiting for a photograph the framework
+          says this page should not have. */}
       <Section tone="light" pad="md">
         <Container>
-          <RevealOnScroll>
-            <p className="max-w-[60ch] t-body text-ash">{hero.lead}</p>
-          </RevealOnScroll>
+          <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-12">
+            <RevealOnScroll className="lg:col-span-5">
+              <p className="max-w-[60ch] t-body text-ash">{hero.lead}</p>
+            </RevealOnScroll>
+            <div className="lg:col-span-7">
+              <SystemDiagram className="mx-auto max-w-[48rem]" />
+              <p className="mt-2 text-center t-eyebrow text-ash">Manufacturing <span className="mx-2 text-red">/</span> Supply <span className="mx-2 text-red">/</span> Market</p>
+            </div>
+          </div>
+
+          <DirectFlow className="mt-16 border-t border-rule pt-12 md:mt-20 md:pt-14" />
         </Container>
       </Section>
 
@@ -60,7 +76,14 @@ export default function Difference() {
             />
 
             <div className="lg:col-span-6 lg:col-start-7">
-              <ul className="grid gap-px bg-rule sm:grid-cols-3">
+              {/* `--fm-tile-min` is 11rem because "Manufacturers" is 126px at
+                  this weight and the tile carries 24px of padding each side.
+                  Three tracks inside this half-width column were 160px at
+                  tablet widths, which clipped the word. */}
+              <ul
+                className="fm-tiles bg-rule"
+                style={{ '--fm-tile-min': '11rem', '--fm-tile-cols': 3 }}
+              >
                 {realEconomy.contributors.map((c, i) => {
                   const Icon = [IconFactory, IconStore, IconUsers][i]
                   return (

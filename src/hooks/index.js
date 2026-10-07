@@ -8,6 +8,7 @@ import {
   selectSmallScreenMedia,
 } from '../stores/environment'
 import { useScrollStore, selectScrolled, selectProgress } from '../stores/scroll'
+import { useUIStore } from '../stores/ui'
 
 /* ===========================================================================
    ENVIRONMENT
@@ -34,6 +35,22 @@ export const useScrolled = () => useScrollStore(selectScrolled)
 
 /** 0 → 1 progress through the document. */
 export const useScrollProgress = () => useScrollStore(selectProgress)
+
+/**
+ * Declares what the navbar is sitting on while this page is mounted.
+ *
+ * Call it from any page whose first screen is a light surface, so the bar takes
+ * its solid treatment immediately instead of waiting for a scroll it may never
+ * get. Resets to 'dark' on unmount, so a page that does not call it keeps the
+ * transparent-over-hero default and no route can leave the tone behind.
+ */
+export function useNavTone(tone) {
+  const setNavTone = useUIStore((s) => s.setNavTone)
+  useEffect(() => {
+    setNavTone(tone)
+    return () => setNavTone('dark')
+  }, [tone, setNavTone])
+}
 
 /* ===========================================================================
    LOCAL HOOKS

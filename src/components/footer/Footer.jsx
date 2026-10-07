@@ -21,12 +21,18 @@ export default function Footer() {
         />
       </div>
 
-      <div className="fm-container relative py-20 md:py-24">
+      {/* Asymmetric block padding on purpose. The columns need air above them,
+          but the bottom bar supplies its own `py-6` immediately below — so a
+          matching 24 here stacked into roughly 120px of empty footer before the
+          copyright line, which is the "excessive bottom padding" note. */}
+      <div className="fm-container relative pb-14 pt-20 md:pb-16 md:pt-24">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-12 lg:gap-8">
           {/* Column 1 — Brand */}
           <div className="lg:col-span-4">
-            <Logo variant="light" height={34} />
-            <p className="mt-6 max-w-[22ch] text-[0.9375rem] font-medium leading-snug">
+            {/* Matched to the navbar's resting size so the mark reads the same
+                weight at both ends of the page. */}
+            <Logo variant="light" height={48} />
+            <p className="mt-7 max-w-[22ch] text-[0.9375rem] font-medium leading-snug">
               Transforming Markets
               <br />
               with <span className="text-red">Direct Commerce</span>.
@@ -135,4 +141,3 @@ export default function Footer() {
 const FooterHeading = ({ children }) => (
   <h2 className="t-eyebrow text-white/45">{children}</h2>
 )
-

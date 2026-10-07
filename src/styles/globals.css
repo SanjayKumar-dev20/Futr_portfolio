@@ -94,7 +94,31 @@
 :root {
   --fm-red: #ff0b2a;
   --fm-graphite: #0a0a0b;
-  --fm-container: 1440px;
+
+  /*
+    Measure.
+
+    This used to be `clamp(1440px, 92vw, 1760px)` — a *viewport-proportional*
+    measure with no upper anchor worth the name. On a 1080p desktop at 100%
+    scale that resolved to 1760px of content width, and because the type scale
+    is capped (`t-body` tops out at 17px, `t-h3` at 26px) the result was a page
+    of small type and short cards floating in a very wide box: the client's
+    "cards shrink into small, isolated boxes with excessive dead space".
+
+    A single fixed maximum fixes it, and it is also what makes the layout hold
+    still across zoom levels. 1080p at 100/110/125% browser zoom gives CSS
+    viewports of 1920/1745/1536px — all three are above 1440, so all three
+    render the identical composition and only the surrounding margin changes.
+    That is the "visual balance across 100%, 110% and 125%" the review asks
+    for; a vw-based measure cannot give it, because the layout is redrawn at
+    every zoom step by definition.
+
+    `--fm-max` is deliberately a bare length rather than a `min()` expression:
+    full-bleed panels do arithmetic with it (see `.fm-split-pad`) and `min()`
+    with a percentage inside is not valid in that context.
+  */
+  --fm-max: 1440px;
+  --fm-container: min(var(--fm-max), 100%);
   --fm-pad: 4rem;
   --nav-h: 5.5rem;
 }
@@ -199,6 +223,94 @@ img {
   padding-inline: var(--fm-pad);
 }
 
+/*
+   Copy inside a full-bleed half-panel, snapped to the global left/right guide.
+
+   The split band is a two-column grid at full viewport width, so its panels
+   know nothing about `.fm-container` and were padded with a flat `p-14`. That
+   put the headline 58px from the window edge while every other section on the
+   page started 304px in — the "jumping x-axis baseline" in the review.
+
+   The arithmetic is exact rather than approximate. The guide sits at
+   `(DocW - fm-max) / 2 + pad`; a panel is half the document, so `DocW = 2 × AW`
+   and the same point is `AW - fm-max/2 + pad`. `100%` here resolves against the
+   panel, so that is what the declaration says. Using `100vw` instead would be
+   off by half a scrollbar — which `scrollbar-gutter: stable` guarantees is
+   always present.
+
+   Scoped to the breakpoint where the band actually splits: below `lg` the grid
+   is a single column, `100%` is the whole document, and the formula would
+   describe a guide that is not there.
+*/
+.fm-split-pad {
+  padding: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .fm-split-pad {
+    padding-block: 3.5rem;
+    padding-inline: var(--fm-pad);
+  }
+  .fm-split-pad[data-side='left'] {
+    padding-left: max(var(--fm-pad), calc(100% - var(--fm-max) / 2 + var(--fm-pad)));
+  }
+  .fm-split-pad[data-side='right'] {
+    padding-right: max(var(--fm-pad), calc(100% - var(--fm-max) / 2 + var(--fm-pad)));
+  }
+}
+
+/*
+   Cards that size themselves to the space instead of to a column count.
+
+   `repeat(auto-fit, minmax(…, 1fr))` keeps a card above its legible minimum and
+   lets the track count fall as the measure narrows, so the same block reads
+   correctly at 1440px and at 125% zoom without a breakpoint for each. The inner
+   `min()` stops the 320px floor from forcing a horizontal scrollbar on a phone.
+*/
+.fm-autogrid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+}
+
+/*
+   The hairline-separated tile grid, used wherever three or four facts sit in a
+   row divided by 1px rules rather than by cards.
+
+   `--fm-tile-cols` is a ceiling, not an instruction, and `--fm-tile-min` is the
+   floor the content actually needs:
+
+     minmax(max(MIN, (100% - gaps) / COLS), 1fr)
+            └ never crushes a track    └ never more tracks than COLS
+
+   A flat `sm:grid-cols-3` is only right when the grid has the full measure.
+   Several of these sit inside a half-width column, where three tracks worked
+   out at 160px — 112px of content once the padding is off, against the 126px
+   the word "Manufacturers" needs. The track count now falls to two there and
+   returns to three when the measure allows, with no breakpoint per call site.
+
+   The `COLS px` subtracted for the gaps is load-bearing: without it the grid
+   asks for COLS tracks of exactly 100%/COLS *plus* the 1px rules between them,
+   which overflows, and `auto-fit` quietly renders one track fewer than asked.
+*/
+.fm-tiles {
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(
+      min(
+        100%,
+        max(
+          var(--fm-tile-min, 17rem),
+          (100% - var(--fm-tile-cols, 3) * 1px) / var(--fm-tile-cols, 3)
+        )
+      ),
+      1fr
+    )
+  );
+}
+
 /* The 12-column grid the plan specifies */
 .fm-grid {
   display: grid;
@@ -225,15 +337,26 @@ img {
    three-line lockup in the comp reads as one solid block of type.
    =========================================================================== */
 .t-hero {
-  font-size: clamp(2.25rem, 4.6vw, 3.75rem);
+  font-size: clamp(2.25rem, 4.6vw, 4rem);
   font-weight: 800;
   line-height: 1.02;
   letter-spacing: -0.035em;
 }
 
+/*
+   The home hero lockup.
+
+   The upper bound is set by a measurement, not by taste: "Transforming Markets
+   with" has to hold its own line at every width, because the two-line break
+   (line 1 plain, line 2 red) is the design. At 58px that line measures 789px
+   and the copy column is 832px from `xl` up — 43px of slack, enough to absorb
+   the fallback face in the moment before Montserrat swaps in and not enough to
+   let a third line appear. Raising this without widening the `max-w` in
+   Hero.jsx reflows it to "Transforming Markets / with / Direct Commerce".
+*/
 .home-hero-heading {
-  font-size: clamp(2.25rem, 4.25vw, 3.5rem);
-  line-height: 1.01;
+  font-size: clamp(2.25rem, 4.4vw, 3.625rem);
+  line-height: 1.02;
 }
 
 .t-display {
@@ -251,24 +374,34 @@ img {
 }
 
 .t-h3 {
-  font-size: clamp(1.25rem, 1.7vw, 1.625rem);
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.015em;
+  font-size: clamp(1.3125rem, 1.8vw, 1.75rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+/* Card headline — heavier and tighter than a section h3, per the Canva comp:
+   the eyebrow stays quiet, the headline carries the card. */
+.t-card-title {
+  font-size: clamp(1.375rem, 1.9vw, 1.8125rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
 }
 
 .t-body {
-  font-size: clamp(0.9375rem, 1.05vw, 1.0625rem);
+  font-size: clamp(1rem, 1.1vw, 1.125rem);
   line-height: 1.65;
   font-weight: 400;
 }
 
 .t-small {
-  font-size: 0.875rem;
-  line-height: 1.6;
+  font-size: clamp(0.9375rem, 0.95vw, 1rem);
+  line-height: 1.62;
 }
 
-/* The letterspaced all-caps label used above every section heading */
+/* The letterspaced all-caps label used above every section heading. Small,
+   quiet and wide — it labels the card, it does not compete with it. */
 .t-eyebrow {
   font-size: 0.6875rem;
   font-weight: 600;
